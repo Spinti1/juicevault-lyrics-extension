@@ -38,6 +38,64 @@
 
   let settings = loadSettings();
 
+  // ========== DYNAMIC THEME SYSTEM ==========
+  const THEME_PALETTES = {
+    purple: {
+      primary: '#8b5cf6',
+      secondary: '#c084fc',
+      glow: 'rgba(139, 92, 246, 0.45)',
+      border: 'rgba(139, 92, 246, 0.35)',
+      line: 'rgba(139, 92, 246, 0.85)',
+      gradient: 'linear-gradient(135deg, #8b5cf6, #7c3aed)'
+    },
+    green: {
+      primary: '#10b981',
+      secondary: '#34d399',
+      glow: 'rgba(16, 185, 129, 0.45)',
+      border: 'rgba(16, 185, 129, 0.35)',
+      line: 'rgba(16, 185, 129, 0.85)',
+      gradient: 'linear-gradient(135deg, #10b981, #059669)'
+    },
+    fire: {
+      primary: '#ef4444',
+      secondary: '#fbbf24',
+      glow: 'rgba(239, 68, 68, 0.45)',
+      border: 'rgba(239, 68, 68, 0.35)',
+      line: 'rgba(239, 68, 68, 0.85)',
+      gradient: 'linear-gradient(135deg, #ef4444, #f59e0b)'
+    },
+    ice: {
+      primary: '#06b6d4',
+      secondary: '#38bdf8',
+      glow: 'rgba(6, 182, 212, 0.45)',
+      border: 'rgba(6, 182, 212, 0.35)',
+      line: 'rgba(6, 182, 212, 0.85)',
+      gradient: 'linear-gradient(135deg, #06b6d4, #3b82f6)'
+    },
+    neon: {
+      primary: '#ec4899',
+      secondary: '#a855f7',
+      glow: 'rgba(236, 72, 153, 0.45)',
+      border: 'rgba(236, 72, 153, 0.35)',
+      line: 'rgba(236, 72, 153, 0.85)',
+      gradient: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #10b981 100%)'
+    }
+  };
+
+  function applyThemeCSS(themeName) {
+    const t = THEME_PALETTES[themeName] || THEME_PALETTES.purple;
+    const root = document.documentElement;
+    root.style.setProperty('--jv-theme-primary', t.primary);
+    root.style.setProperty('--jv-theme-secondary', t.secondary);
+    root.style.setProperty('--jv-theme-glow', t.glow);
+    root.style.setProperty('--jv-theme-border', t.border);
+    root.style.setProperty('--jv-theme-line', t.line);
+    root.style.setProperty('--jv-theme-gradient', t.gradient);
+  }
+
+  // Initialize theme CSS variables immediately
+  applyThemeCSS(settings.colorTheme);
+
   // ========== HELPERS ==========
   let cachedAudio = null;
   let lastAudioCheck = 0;
@@ -244,7 +302,7 @@
     const panel = document.createElement('div');
     panel.id = SETTINGS_ID;
     panel.innerHTML = `
-      <h3><span>Visualizer Settings</span><button class="jv-close">×</button></h3>
+      <h3><span>Extension Settings</span><button class="jv-close">×</button></h3>
       <div class="jv-row-inline"><span>Enable visualizer</span><button class="jv-toggle ${settings.enabled ? 'on' : ''}" data-key="enabled"></button></div>
       <div class="jv-field"><label>Style</label>
         <select data-key="style">
@@ -302,6 +360,9 @@
       sel.addEventListener('change', () => {
         settings[sel.dataset.key] = sel.value;
         saveSettings(settings);
+        if (sel.dataset.key === 'colorTheme') {
+          applyThemeCSS(settings.colorTheme);
+        }
         if (sel.dataset.key === 'style') {
           const mirrorRow = panel.querySelector('#jv-row-center-mirror');
           if (mirrorRow) {
@@ -339,7 +400,7 @@
     const hook = (btn) => {
       if (btn.dataset.jvHooked) return;
       btn.dataset.jvHooked = '1';
-      btn.title = 'Visualizer Settings';
+      btn.title = 'Extension Settings';
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();

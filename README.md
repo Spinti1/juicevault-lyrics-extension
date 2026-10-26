@@ -21,7 +21,7 @@ A high-performance, developer-grade browser extension engineered specifically fo
 * **Symmetrical Center-Mirroring:** Optional "Mirror from center" toggle (for *Bars* and *Mirror Bars*) that anchors 808 sub-bass in the exact horizontal middle of the screen and mirrors outward symmetrically.
 * **Logarithmic Octave Binning & Pink-Noise Equalization:** Balances 808 trap sub-bass with crisp mid-vocals and hi-hats across the full spectrum.
 * **Dynamic Headroom Compression:** Never clips or looks "full/stuck at the top", even on loud mastered tracks.
-* **5 Curated Color Themes:** *Purple Haze (Site Native)*, *Neon*, *Juice Green*, *Fire*, and *Ice*.
+* **5 Curated Color Themes & Dynamic Site Theming:** *Purple Haze (Site Native)*, *Neon*, *Juice Green*, *Fire*, and *Ice*. Changing the theme instantly synchronizes the waveform baseline, seekbar, Play/Pause button, active Shuffle/Repeat controls, and extension HUD with matching glowing accents.
 
 ### 2. 🔊 Smart Volume Engine & Wheel Control
 * **Hover & Scroll Volume:** Adjust track volume anywhere over the full player or bottom miniplayer using your mouse wheel.
@@ -84,7 +84,7 @@ Designed from the ground up to consume **zero wasted CPU/GPU cycles**:
 | :--- | :--- | :--- |
 | **`Alt + L`** | Open Genius lyrics for current playing track | Global |
 | **Mouse Wheel (Scroll)** | Increase / Decrease Volume (1% - 2%) | Hover over Player / MiniPlayer |
-| **Visualizer Icon** | Open / Close Purple Visualizer Settings Panel | Top Right of Song Player |
+| **Settings Icon / Extension Settings** | Open / Close Extension Settings Panel (Style, Bars, Theme, Mirrors) | Top Right of Song Player |
 | **PiP Icon** | Open floating desktop Picture-in-Picture miniplayer | Player Top Right / MiniPlayer |
 | **Extension Icon** | Toggle quick help overlay panel | Browser Action |
 

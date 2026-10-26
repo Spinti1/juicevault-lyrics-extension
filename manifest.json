@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "JuiceVault Lyrics Finder",
   "version": "3.1",
-  "description": "Lyrics, visualizer settings & floating PiP miniplayer for juicevault.xyz",
+  "description": "Lyrics, custom visualizer, extension settings & floating PiP miniplayer for juicevault.xyz",
   "permissions": ["activeTab", "scripting"],
   "host_permissions": ["https://juicevault.xyz/*", "https://*.juicevault.xyz/*"],
   "content_scripts": [
