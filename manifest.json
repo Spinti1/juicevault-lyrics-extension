@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "JuiceVault Lyrics Finder",
+  "version": "3.1",
+  "description": "Lyrics, visualizer settings & floating PiP miniplayer for juicevault.xyz",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["https://juicevault.xyz/*", "https://*.juicevault.xyz/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://juicevault.xyz/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "commands": {
+    "open-lyrics": {
+      "suggested_key": {
+        "default": "Alt+L",
+        "windows": "Alt+L",
+        "mac": "Alt+L",
+        "linux": "Alt+L"
+      },
+      "description": "Open lyrics for the current track"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "JuiceVault Lyrics (Alt+L)",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

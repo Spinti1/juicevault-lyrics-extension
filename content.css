@@ -1,0 +1,392 @@
+/* ========== FULLSCREEN LYRICS BUTTON ========== */
+#jv-lyrics-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  color: white;
+  padding: 0;
+  margin-left: 8px;
+  flex-shrink: 0;
+  z-index: 50;
+}
+#jv-lyrics-btn:hover { background: rgba(29, 185, 84, 0.9); transform: scale(1.05); }
+#jv-lyrics-btn:active { transform: scale(0.95); }
+#jv-lyrics-btn svg { width: 22px; height: 22px; pointer-events: none; }
+
+/* ========== MINIPLAYER LYRICS BUTTON (left side) ========== */
+#jv-lyrics-btn-mini {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: white;
+  padding: 0;
+  flex-shrink: 0;
+  z-index: 9999;
+}
+#jv-lyrics-btn-mini:hover { background: rgba(29, 185, 84, 0.9); }
+#jv-lyrics-btn-mini svg { width: 15px; height: 15px; pointer-events: none; }
+
+#jv-mini-container {
+  left: 12px !important;
+  right: auto !important;
+  bottom: 10px !important;
+  position: absolute !important;
+  bottom: 10px !important;
+  left: 12px !important;
+  right: auto !important;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+
+/* ========== VISUALIZER CANVAS ========== */
+#jv-viz-canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+}
+canvas[class*="waveformCanvas"] { opacity: 0.12 !important; }
+
+/* Ensure album cover stays in front of circular visualizer */
+[class*="SongPlayer"] img,
+[class*="coverWrapper"] img,
+img[src*="/music/covers/"] {
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+/* ========== SETTINGS PANEL ========== */
+#jv-viz-settings {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 300px;
+  max-height: 70vh;
+  overflow-y: auto;
+  color-scheme: dark !important;
+  background: rgba(15, 12, 24, 0.96) !important;
+  border: 1px solid rgba(139, 92, 246, 0.35) !important;
+  border-radius: 16px;
+  padding: 18px;
+  z-index: 999999;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75), 0 0 28px rgba(139, 92, 246, 0.22) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  animation: jv-fade-in 0.2s ease;
+}
+#jv-viz-settings::-webkit-scrollbar {
+  width: 6px;
+}
+#jv-viz-settings::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 3px;
+}
+#jv-viz-settings::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.4);
+  border-radius: 3px;
+}
+#jv-viz-settings::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.7);
+}
+@keyframes jv-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+#jv-viz-settings h3 {
+  margin: 0 0 14px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #c084fc !important;
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#jv-viz-settings .jv-close {
+  background: none; border: none; color: #888; font-size: 20px;
+  cursor: pointer; padding: 0; line-height: 1;
+}
+#jv-viz-settings .jv-close:hover { color: #c084fc !important; }
+
+#jv-viz-settings .jv-field {
+  margin-bottom: 14px;
+}
+#jv-viz-settings label {
+  display: block;
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+#jv-viz-settings select {
+  width: 100%;
+  color-scheme: dark !important;
+  background: #181528 !important;
+  border: 1px solid rgba(139, 92, 246, 0.35) !important;
+  border-radius: 8px;
+  color: #f3f4f6 !important;
+  padding: 8px 10px;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#jv-viz-settings select:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.45) !important;
+}
+#jv-viz-settings select option {
+  color-scheme: dark !important;
+  background: #151222 !important;
+  background-color: #151222 !important;
+  color: #f3f4f6 !important;
+  padding: 8px 10px !important;
+}
+#jv-viz-settings select option:checked,
+#jv-viz-settings select option:hover {
+  background: #7c3aed !important;
+  background-color: #7c3aed !important;
+  color: #ffffff !important;
+}
+#jv-viz-settings input[type="range"] {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  outline: none;
+  accent-color: #8b5cf6 !important;
+}
+#jv-viz-settings input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #c084fc;
+  box-shadow: 0 0 8px rgba(192, 132, 252, 0.7);
+  cursor: pointer;
+  border: 2px solid #fff;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+#jv-viz-settings input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.95);
+}
+#jv-viz-settings .jv-row-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #ddd;
+}
+#jv-viz-settings .jv-toggle {
+  width: 42px;
+  height: 24px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+#jv-viz-settings .jv-toggle.on {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5) !important;
+}
+#jv-viz-settings .jv-toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+}
+#jv-viz-settings .jv-toggle.on::after {
+  transform: translateX(18px);
+}
+#jv-viz-settings .jv-val {
+  font-size: 11px;
+  color: #c084fc !important;
+  text-align: right;
+  margin-top: 2px;
+}
+#jv-viz-settings .jv-footer {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #777;
+  text-align: center;
+}
+
+/* Highlight the original visualizer button in purple when settings open */
+button[title="Hide Visualizer"].jv-settings-active,
+button[title*="Visualizer"].jv-settings-active {
+  background: rgba(139, 92, 246, 0.35) !important;
+  color: #c084fc !important;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.35) !important;
+}
+
+/* HELP PANEL */
+#jv-help-panel {
+  position: fixed; bottom: 24px; right: 24px; width: 320px;
+  background: rgba(18,18,18,0.96); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px; padding: 20px; z-index: 999999; color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5); backdrop-filter: blur(12px);
+  animation: jv-fade-in 0.25s ease;
+}
+#jv-help-panel h3 { margin: 0 0 14px; font-size: 16px; font-weight: 600; color: #1DB954; display: flex; align-items: center; gap: 8px; }
+#jv-help-panel .jv-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 13.5px; color: #ddd; }
+#jv-help-panel .jv-key { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 4px 8px; font-size: 12px; font-weight: 600; min-width: 64px; text-align: center; }
+#jv-help-panel .jv-close { position: absolute; top: 12px; right: 14px; background: none; border: none; color: #888; font-size: 18px; cursor: pointer; }
+#jv-help-panel .jv-close:hover { color: #fff; }
+#jv-help-panel .jv-footer { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 11.5px; color: #777; text-align: center; }
+
+/* ========== PiP LAUNCH BUTTON ========== */
+#jv-pip-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  cursor: pointer;
+  color: white;
+  padding: 0;
+  margin-left: 6px;
+  transition: background 0.2s, transform 0.15s;
+  z-index: 50;
+}
+#jv-pip-btn:hover {
+  background: rgba(29, 185, 84, 0.9);
+  transform: scale(1.05);
+}
+#jv-pip-btn svg {
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+#jv-pip-btn-mini {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  cursor: pointer;
+  color: white;
+  padding: 0;
+  margin-left: 6px;
+  z-index: 9999;
+}
+#jv-pip-btn-mini:hover { background: rgba(29, 185, 84, 0.9); }
+#jv-pip-btn-mini svg { width: 14px; height: 14px; pointer-events: none; }
+
+/* ========== JUICEVAULT THEMED VOLUME HUD ========== */
+#jv-volume-toast {
+  position: fixed !important;
+  bottom: 92px !important;
+  right: 28px !important;
+  background: rgba(13, 13, 18, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 14px !important;
+  padding: 9px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  color: #fff !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), 0 0 24px rgba(139, 92, 246, 0.16) !important;
+  backdrop-filter: blur(18px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+  z-index: 9999999 !important;
+  pointer-events: none !important;
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#jv-volume-toast.show {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+#jv-volume-toast svg {
+  color: #c084fc !important;
+  filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.5));
+  flex-shrink: 0;
+}
+
+#jv-volume-toast .jv-vol-bar {
+  width: 88px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+#jv-volume-toast .jv-vol-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b5cf6 0%, #ec4899 50%, #10b981 100%) !important;
+  border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(236, 72, 153, 0.5);
+  transition: width 0.06s ease-out !important;
+}
+
+#jv-volume-toast span {
+  min-width: 36px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+
+/* ========== HIDE ORIGINAL SITE VOLUME CONTROLS (ONLY BUTTONS & SLIDERS) ========== */
+button[aria-label="Mute"],
+button[aria-label="Unmute"],
+span[aria-label="Volume"],
+[class*="SongPlayer_volumeWrapper"],
+[class*="SongPlayer_volumeBtn"],
+[class*="SongPlayer_volumeSlider"] {
+  display: none !important;
+}
+
+
+
