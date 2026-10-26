@@ -1,112 +1,58 @@
-# 🎵 JuiceVault Enhancer & Audio Visualizer Suite
+# 🎵 JuiceVault Enhancer
 
-[![Manifest V3](https://img.shields.io/badge/Chrome_Extension-Manifest_V3-blue.svg?logo=google-chrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/intro/)
-[![Target Site](https://img.shields.io/badge/Target-juicevault.xyz-8b5cf6.svg)](https://juicevault.xyz)
-[![Privacy First](https://img.shields.io/badge/Privacy-Zero_Data_Collection-success.svg)](#-privacy--security-guarantee)
-[![Version](https://img.shields.io/badge/Version-3.1-c084fc.svg)]()
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-spinti-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/spinti)
+[![Target Site](https://img.shields.io/badge/Site-juicevault.xyz-8b5cf6.svg)](https://juicevault.xyz)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A high-performance, developer-grade browser extension engineered specifically for **[JuiceVault](https://juicevault.xyz)**. It seamlessly integrates a real-time hardware-accelerated Web Audio visualizer, an intelligent volume wheel controller with persistent memory, a floating Document Picture-in-Picture miniplayer, and instant Genius lyrics search.
+A lightweight Chrome extension for **[JuiceVault](https://juicevault.xyz)** that adds a real-time audio visualizer, smooth scroll wheel volume control, a floating PiP miniplayer, and quick lyrics.
 
 ---
 
-## ✨ Key Features
+## Features
 
-### 1. 🎛️ Real-Time Audio Visualizer
-* **4 Distinct Visualizer Modes:**
-  * **Bars (Bottom Baseline):** Responsive frequency bars seated directly on the player baseline line with no clipping or gaps.
-  * **Mirror Bars:** Vertical 4-way symmetrical bars radiating upwards and downwards.
-  * **Waveform:** Organic, flowing Bezier curve wave.
-  * **Circular Album Halo:** Concentric halo that dynamically fits square and rounded album art, pulsing outward with bass and rhythm.
-* **Symmetrical Center-Mirroring:** Optional "Mirror from center" toggle (for *Bars* and *Mirror Bars*) that anchors 808 sub-bass in the exact horizontal middle of the screen and mirrors outward symmetrically.
-* **Logarithmic Octave Binning & Pink-Noise Equalization:** Balances 808 trap sub-bass with crisp mid-vocals and hi-hats across the full spectrum.
-* **Dynamic Headroom Compression:** Never clips or looks "full/stuck at the top", even on loud mastered tracks.
-* **5 Curated Color Themes & Dynamic Site Theming:** *Purple Haze (Site Native)*, *Neon*, *Juice Green*, *Fire*, and *Ice*. Changing the theme instantly synchronizes the waveform baseline, seekbar, Play/Pause button, active Shuffle/Repeat controls, and extension HUD with matching glowing accents.
-
-### 2. 🔊 Smart Volume Engine & Wheel Control
-* **Hover & Scroll Volume:** Adjust track volume anywhere over the full player or bottom miniplayer using your mouse wheel.
-* **Accelerated Fine-Tuning:** 1% precision step for delicate adjustment; automatically accelerates to 2% during continuous scrolling (>1s).
-* **Cross-Track Memory Persistence:** Automatically remembers your chosen volume level in local storage across song changes, autoplay, and browser restarts.
-* **Site HUD Integration:** Displays an unobtrusive, neon-glow JuiceVault volume toast HUD while hiding native redundant sliders.
-
-### 3. 🖼️ Document Picture-in-Picture Floating Miniplayer
-* Powered by the modern `documentPictureInPicture` API.
-* Floats outside the browser on top of any game, IDE, or desktop app.
-* Includes real-time progress seekbar, mini visualizer canvas, shuffle/repeat toggles, and volume slider.
-
-### 4. 🎤 Quick Lyrics Lookup
-* Press **`Alt + L`** anytime or click the lyrics badge to instantly open Genius search for the current track and artist in a secure, sandboxed tab.
+- **Audio Visualizer**: 4 styles (Bars, Mirror Bars, Waveform, Circular Halo). Includes center-mirror mode and 5 color themes (Purple Haze, Neon, Green, Fire, Ice) that re-theme the player buttons, seekbar, and baseline.
+- **Mouse Wheel Volume**: Scroll over the player or miniplayer to change volume (1% step, accelerates to 2% on continuous scroll). Volume is remembered across song changes.
+- **Floating Miniplayer (PiP)**: Pop out a desktop miniplayer with playback controls and track progress while gaming or working in other apps.
+- **Quick Lyrics (`Alt + L`)**: Instantly searches Genius lyrics for the current song in a new tab.
+- **Lightweight & Private**: Zero data collected, zero external requests, works strictly on `juicevault.xyz`.
 
 ---
 
-## ⚡ Ultra-Lite Performance & Architecture
+## Controls
 
-Designed from the ground up to consume **zero wasted CPU/GPU cycles**:
-* **0% CPU Idle Mode:** The `requestAnimationFrame` render loop automatically halts when audio is paused or muted.
-* **Tab Visibility Throttling:** Pauses GPU rendering when the tab is hidden or minimized (`document.visibilityState === 'hidden'`).
-* **Zero-DOM Rendering Loop:** Audio element references and bounding dimensions are cached to eliminate 60 FPS layout thrashing.
-* **Clean Isolation:** Executes purely within standard DOM lifecycle hooks without prototype pollution or runtime dependencies.
-
----
-
-## 🔒 Privacy & Security Guarantee
-
-* **100% Offline-First:** Zero telemetry, zero analytics, zero external network requests (`fetch`/`XHR`).
-* **No User Data Collected:** The extension does not store, transmit, or process any personal data, accounts, credentials, browsing history, or cookies.
-* **Strict Domain Sandboxing:**
-  * Content scripts and service workers execute strictly on `https://juicevault.xyz/*`.
-  * External tab links (`Genius`) are strictly isolated with `noopener,noreferrer`.
-  * Local storage is strictly scoped to local UI settings (`bars`, `style`, `theme`) and volume level.
+| Shortcut / Action | What it does |
+| :--- | :--- |
+| **`Alt + L`** | Open Genius lyrics for the current track |
+| **Mouse Wheel (Scroll)** | Change volume (1% step / 2% fast scroll) |
+| **Settings Icon** | Open Extension Settings (visualizer, themes, bars) |
+| **PiP Icon** | Open floating Picture-in-Picture miniplayer |
+| **Extension Icon** | Toggle quick help overlay |
 
 ---
 
-## 🚀 Installation Guide
+## Install
 
-### Chrome / Brave / Edge / Opera (Chromium-based):
-
-1. **Download or Clone the Repository:**
+1. Clone or download this repo:
    ```bash
    git clone https://github.com/Spinti1/juicevault-lyrics-extension.git
    ```
-2. Open your browser's extension management page:
-   * **Chrome / Brave:** `chrome://extensions/`
-   * **Microsoft Edge:** `edge://extensions/`
-3. Enable **Developer mode** (toggle in the top-right corner).
-4. Click **Load unpacked** (Încarcă despachetat).
-5. Select the `juice-lyrics-extension` directory.
-6. Navigate to **[juicevault.xyz](https://juicevault.xyz)** and enjoy!
+2. Go to `chrome://extensions/` (or `edge://extensions/` / `brave://extensions/`).
+3. Turn on **Developer mode** (top right).
+4. Click **Load unpacked** and select the extension folder.
+5. Open [juicevault.xyz](https://juicevault.xyz) and play a song!
 
 ---
 
-## ⌨️ Keyboard Shortcuts & Controls
+## Support
 
-| Shortcut / Action | Function | Scope |
-| :--- | :--- | :--- |
-| **`Alt + L`** | Open Genius lyrics for current playing track | Global |
-| **Mouse Wheel (Scroll)** | Increase / Decrease Volume (1% - 2%) | Hover over Player / MiniPlayer |
-| **Settings Icon / Extension Settings** | Open / Close Extension Settings Panel (Style, Bars, Theme, Mirrors) | Top Right of Song Player |
-| **PiP Icon** | Open floating desktop Picture-in-Picture miniplayer | Player Top Right / MiniPlayer |
-| **Extension Icon** | Toggle quick help overlay panel | Browser Action |
+If you enjoy this extension, you can support development here:
+
+👉 **[buymeacoffee.com/spinti](https://buymeacoffee.com/spinti)**
+
+[![Buy Me A Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=☕&slug=spinti&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff)](https://buymeacoffee.com/spinti)
 
 ---
 
-## 📁 Project Structure
+## License
 
-```
-juicevault-lyrics-extension/
-├── manifest.json       # Chrome Manifest V3 configuration & permissions
-├── content.js          # Core audio graph, visualizer renderer & volume controller
-├── content.css         # UI styles, purple theme variables & volume HUD
-├── background.js       # Service worker handling commands & tab messaging
-├── icon16.png          # 16x16 extension toolbar icon
-├── icon48.png          # 48x48 extension management icon
-├── icon128.png         # 128x128 high-res Web Store icon
-├── LICENSE             # MIT License
-└── README.md           # Documentation
-```
-
----
-
-## 📄 License
-
-This project is open-source under the [MIT License](LICENSE). Built with ❤️ for Juice WRLD fans and the JuiceVault community.
+[MIT](LICENSE)

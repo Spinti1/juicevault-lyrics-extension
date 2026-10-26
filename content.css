@@ -258,6 +258,21 @@ img[src*="/music/covers/"] {
   text-align: center;
 }
 
+.jv-bmc-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--jv-theme-secondary) !important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 11.5px;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.jv-bmc-link:hover {
+  opacity: 0.85;
+  text-decoration: underline;
+  transform: translateY(-1px);
+}
+
 /* Highlight settings button when active */
 button[title*="Settings"].jv-settings-active,
 button[title*="Visualizer"].jv-settings-active {

@@ -217,10 +217,12 @@
         Lyrics Finder
       </h3>
       <div class="jv-row"><span class="jv-key">Alt + L</span><span>Open lyrics</span></div>
-      <div class="jv-row"><span class="jv-key">Visualizer</span><span>Bars icon → settings</span></div>
-      <div class="jv-row"><span class="jv-key">PiP</span><span>Floating miniplayer outside browser</span></div>
-      <div class="jv-row"><span class="jv-key">Click icon</span><span>Show / hide this panel</span></div>
-      <div class="jv-footer">juicevault.xyz only</div>
+      <div class="jv-row"><span class="jv-key">Scroll</span><span>Volume control (1% - 2%)</span></div>
+      <div class="jv-row"><span class="jv-key">Settings</span><span>Extension settings & themes</span></div>
+      <div class="jv-row"><span class="jv-key">PiP</span><span>Floating miniplayer</span></div>
+      <div class="jv-footer">
+        <a href="https://buymeacoffee.com/spinti" target="_blank" rel="noopener noreferrer" class="jv-bmc-link">☕ buymeacoffee.com/spinti</a>
+      </div>
     `;
     panel.querySelector('.jv-close').addEventListener('click', () => panel.remove());
     return panel;
@@ -331,7 +333,10 @@
         <span>Mirror from center</span>
         <button class="jv-toggle ${settings.centerMirror ? 'on' : ''}" data-key="centerMirror"></button>
       </div>
-      <div class="jv-footer">Settings saved automatically</div>
+      <div class="jv-footer">
+        <div>Settings saved automatically</div>
+        <a href="https://buymeacoffee.com/spinti" target="_blank" rel="noopener noreferrer" class="jv-bmc-link">☕ Support: buymeacoffee.com/spinti</a>
+      </div>
     `;
 
     panel.querySelector('.jv-close').addEventListener('click', () => {
