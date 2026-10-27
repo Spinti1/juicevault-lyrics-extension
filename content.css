@@ -410,63 +410,176 @@ button[title*="Visualizer"].jv-settings-active {
   letter-spacing: -0.01em;
 }
 
-/* ========== DYNAMIC SITE THEME INTEGRATION ========== */
+/* ========== DYNAMIC SITE THEME INTEGRATION (FULL PLAYER & MINIPLAYER) ========== */
 
-/* Waveform bottom line / purple bar */
+/* Horizontal purple line across the bottom (Top edge of controls bar & bottom edge of player canvas) */
+div[class*="SongPlayer_controlsBar"],
+div[class*="controlsBar"],
+[class*="SongPlayer_controlsBar"],
+[class*="controlsBar"] {
+  border-top: 1.5px solid var(--jv-theme-line) !important;
+  box-shadow: 0 -4px 20px var(--jv-theme-glow) !important;
+}
+
 [class*="SongPlayer_waveform"],
 [class*="waveformWrapper"],
-[class*="waveformContainer"] {
-  border-bottom: 2px solid var(--jv-theme-line) !important;
+[class*="waveformContainer"],
+[class*="SongPlayer_canvasWrapper"],
+canvas[class*="waveformCanvas"] {
+  border-bottom: 1.5px solid var(--jv-theme-line) !important;
 }
 
-/* Progress / Seek bar & slider range */
-[data-slot="slider-range"],
-[class*="SongPlayer_progressFill"],
-[class*="SongPlayer_progressBar"] {
-  background: var(--jv-theme-gradient) !important;
-}
-
-[data-slot="slider-thumb"],
-[role="slider"] {
-  border-color: var(--jv-theme-secondary) !important;
-  box-shadow: 0 0 10px var(--jv-theme-glow) !important;
-}
-
-/* Primary Play/Pause Button */
+/* Primary Play/Pause Button - Full Player Square Button & MiniPlayer Circle Button */
+button[class*="SongPlayer_playBtnSquare"],
+button[class*="playBtnSquare"],
+[class*="SongPlayer_playBtnSquare"],
+[class*="playBtnSquare"],
+button[class*="SongPlayer_playBtn"],
+[class*="SongPlayer_playBtn"],
 button[aria-label="Play"],
 button[aria-label="Pause"],
 [class*="SongPlayer"] button[aria-label*="Play" i],
-[class*="SongPlayer"] button[aria-label*="Pause" i] {
+[class*="SongPlayer"] button[aria-label*="Pause" i],
+[class*="MiniPlayer"] button[aria-label*="Play" i],
+[class*="MiniPlayer"] button[aria-label*="Pause" i] {
+  background: var(--jv-theme-gradient) !important;
   border-color: var(--jv-theme-border) !important;
-  box-shadow: 0 0 14px var(--jv-theme-glow) !important;
+  box-shadow: 0 0 16px var(--jv-theme-glow) !important;
+  color: #ffffff !important;
 }
 
+button[class*="SongPlayer_playBtnSquare"]:hover,
+button[class*="playBtnSquare"]:hover,
+[class*="SongPlayer_playBtnSquare"]:hover,
+[class*="playBtnSquare"]:hover,
 button[aria-label="Play"]:hover,
-button[aria-label="Pause"]:hover,
-[class*="SongPlayer"] button[aria-label*="Play" i]:hover,
-[class*="SongPlayer"] button[aria-label*="Pause" i]:hover {
-  background: var(--jv-theme-border) !important;
-  box-shadow: 0 0 18px var(--jv-theme-glow) !important;
+button[aria-label="Pause"]:hover {
+  filter: brightness(1.15) !important;
+  box-shadow: 0 0 24px var(--jv-theme-glow) !important;
 }
 
-/* Active Player Action Buttons (Shuffle, Repeat active, Add to Library active) */
+/* Previous & Next Control Buttons (Square) */
+button[class*="SongPlayer_controlBtnSquare"],
+[class*="SongPlayer_controlBtnSquare"],
+[class*="controlBtnSquare"],
+button[aria-label*="track" i],
+button[aria-label*="skip" i] {
+  transition: all 0.2s ease !important;
+}
+
+button[class*="SongPlayer_controlBtnSquare"]:hover,
+[class*="SongPlayer_controlBtnSquare"]:hover,
+[class*="controlBtnSquare"]:hover,
+button[aria-label*="track" i]:hover,
+button[aria-label*="skip" i]:hover {
+  background: var(--jv-theme-border) !important;
+  border-color: var(--jv-theme-primary) !important;
+  color: var(--jv-theme-secondary) !important;
+  box-shadow: 0 0 12px var(--jv-theme-glow) !important;
+}
+
+button[class*="SongPlayer_controlBtnSquare"]:hover svg,
+[class*="SongPlayer_controlBtnSquare"]:hover svg,
+[class*="controlBtnSquare"]:hover svg {
+  fill: var(--jv-theme-secondary) !important;
+}
+
+/* Active Player Controls (Shuffle ON, Repeat ON, AddToLibrary active) */
+button[class*="AddToLibrary_btnActive"],
+[class*="AddToLibrary_btnActive"],
+button[class*="SongPlayer_iconBtn"][title*="Shuffle On" i],
+button[class*="SongPlayer_iconBtn"][title*="Repeat On" i],
+button[class*="SongPlayer_iconBtn"][title*="Repeat All" i],
+button[class*="SongPlayer_iconBtn"][title*="Repeat One" i],
 button[aria-label*="shuffle" i].border-white\/22,
 button[aria-label*="Shuffle"][class*="active" i],
-button[aria-label*="repeat" i]:not([aria-label*="none" i]),
-[class*="AddToLibrary_btnActive"] {
+button[aria-label*="repeat" i]:not([aria-label*="none" i]) {
+  background: var(--jv-theme-border) !important;
   border-color: var(--jv-theme-secondary) !important;
   color: var(--jv-theme-secondary) !important;
-  background: var(--jv-theme-border) !important;
+  box-shadow: 0 0 12px var(--jv-theme-glow) !important;
+  border-radius: 8px !important;
+}
+
+button[class*="AddToLibrary_btnActive"] svg,
+[class*="AddToLibrary_btnActive"] svg {
+  color: var(--jv-theme-secondary) !important;
+  stroke: var(--jv-theme-secondary) !important;
+}
+
+/* Hover for all Icon Buttons (Shuffle, Repeat, Queue, Settings, AddToLibrary) */
+button[class*="SongPlayer_iconBtn"]:hover,
+[class*="SongPlayer_iconBtn"]:hover,
+button[class*="SongPlayer_queueBtn"]:hover,
+[class*="SongPlayer_queueBtn"]:hover,
+button[class*="AddToLibrary_btn"]:hover,
+[class*="AddToLibrary_btn"]:hover,
+button[aria-label="Toggle shuffle"]:hover,
+button[aria-label*="repeat" i]:hover {
+  color: var(--jv-theme-secondary) !important;
+  border-color: var(--jv-theme-border) !important;
   box-shadow: 0 0 10px var(--jv-theme-glow) !important;
 }
 
-/* Player buttons hover state */
-button[aria-label*="track" i]:hover,
-button[aria-label*="skip" i]:hover,
-button[aria-label="Toggle shuffle"]:hover,
-button[aria-label*="repeat" i]:hover {
+button[class*="SongPlayer_iconBtn"]:hover svg,
+[class*="SongPlayer_iconBtn"]:hover svg,
+button[class*="SongPlayer_queueBtn"]:hover svg,
+[class*="SongPlayer_queueBtn"]:hover svg {
+  stroke: var(--jv-theme-secondary) !important;
+}
+
+/* Active Extension Settings button */
+button[class*="SongPlayer_iconBtn"].jv-settings-active,
+[class*="SongPlayer_iconBtn"].jv-settings-active,
+button.jv-settings-active {
+  background: var(--jv-theme-border) !important;
+  color: var(--jv-theme-secondary) !important;
+  border-color: var(--jv-theme-primary) !important;
+  box-shadow: 0 0 14px var(--jv-theme-glow) !important;
+  border-radius: 8px !important;
+}
+button[class*="SongPlayer_iconBtn"].jv-settings-active svg,
+[class*="SongPlayer_iconBtn"].jv-settings-active svg,
+button.jv-settings-active svg {
+  stroke: var(--jv-theme-secondary) !important;
+}
+
+/* Progress Track, Fill & Thumb */
+[class*="SongPlayer_progressFill"],
+[class*="progressFill"],
+[data-slot="slider-range"] {
+  background: var(--jv-theme-gradient) !important;
+  box-shadow: 0 0 10px var(--jv-theme-glow) !important;
+}
+
+[class*="SongPlayer_progressThumb"],
+[class*="progressThumb"],
+[data-slot="slider-thumb"],
+[role="slider"] {
+  background: #ffffff !important;
+  border: 2px solid var(--jv-theme-secondary) !important;
+  box-shadow: 0 0 10px var(--jv-theme-glow) !important;
+}
+
+/* Top bar buttons hover (Back, Gear, Info, Download, Visualizer, Fullscreen) */
+[class*="SongPlayer_topRightBtns"] button:hover,
+[class*="topRightBtns"] button:hover,
+[class*="SongPlayer_topLeftBtns"] button:hover,
+[class*="topLeftBtns"] button:hover {
   border-color: var(--jv-theme-border) !important;
   color: var(--jv-theme-secondary) !important;
+  box-shadow: 0 0 8px var(--jv-theme-glow) !important;
+}
+
+/* Site-wide Primary Color Classes (Shadcn / Tailwind) */
+.text-primary, [class*="text-primary"] {
+  color: var(--jv-theme-primary) !important;
+}
+.bg-primary, [class*="bg-primary"] {
+  background-color: var(--jv-theme-primary) !important;
+}
+.border-primary, [class*="border-primary"] {
+  border-color: var(--jv-theme-primary) !important;
 }
 
 /* ========== HIDE ORIGINAL SITE VOLUME CONTROLS (ONLY BUTTONS & SLIDERS) ========== */
