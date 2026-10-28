@@ -80,10 +80,9 @@
 }
 canvas[class*="waveformCanvas"] { opacity: 0.12 !important; }
 
-/* Ensure album cover stays in front of circular visualizer */
+/* Ensure album cover stays in front of circular visualizer inside the player only */
 [class*="SongPlayer"] img,
-[class*="coverWrapper"] img,
-img[src*="/music/covers/"] {
+[class*="SongPlayer"] [class*="coverWrapper"] img {
   position: relative !important;
   z-index: 3 !important;
 }
@@ -560,30 +559,32 @@ button.jv-settings-active svg {
   stroke: var(--jv-theme-secondary) !important;
 }
 
-/* Progress Track, Fill & Thumb */
+/* Progress Track, Fill & Thumb (Scoped to Player) */
 [class*="SongPlayer_progressTrack"],
-[class*="progressTrack"],
-[data-slot="slider-track"] {
+[class*="SongPlayer"] [class*="progressTrack"],
+[class*="SongPlayer"] [data-slot="slider-track"],
+[class*="MiniPlayer"] [data-slot="slider-track"] {
   background: var(--jv-theme-track) !important;
   border-radius: 9999px !important;
 }
 [class*="SongPlayer_progressTrack"]:hover,
-[class*="progressTrack"]:hover {
+[class*="SongPlayer"] [class*="progressTrack"]:hover {
   background: rgba(255, 255, 255, 0.22) !important;
 }
 
 [class*="SongPlayer_progressFill"],
-[class*="progressFill"],
-[data-slot="slider-range"] {
+[class*="SongPlayer"] [class*="progressFill"],
+[class*="SongPlayer"] [data-slot="slider-range"],
+[class*="MiniPlayer"] [data-slot="slider-range"] {
   background: var(--jv-theme-gradient) !important;
   box-shadow: 0 0 10px var(--jv-theme-glow) !important;
   border-radius: 9999px !important;
 }
 
 [class*="SongPlayer_progressThumb"],
-[class*="progressThumb"],
-[data-slot="slider-thumb"],
-[role="slider"] {
+[class*="SongPlayer"] [class*="progressThumb"],
+[class*="SongPlayer"] [data-slot="slider-thumb"],
+[class*="MiniPlayer"] [data-slot="slider-thumb"] {
   background: #ffffff !important;
   border: 2px solid var(--jv-theme-secondary) !important;
   box-shadow: 0 0 10px var(--jv-theme-glow) !important;
@@ -599,14 +600,17 @@ button.jv-settings-active svg {
   box-shadow: 0 0 8px var(--jv-theme-glow) !important;
 }
 
-/* Site-wide Primary Color Classes (Shadcn / Tailwind) */
-.text-primary, [class*="text-primary"] {
+/* Player-scoped Primary Color Classes (Shadcn / Tailwind) */
+[class*="SongPlayer"] .text-primary,
+[class*="MiniPlayer"] .text-primary {
   color: var(--jv-theme-primary) !important;
 }
-.bg-primary, [class*="bg-primary"] {
+[class*="SongPlayer"] .bg-primary,
+[class*="MiniPlayer"] .bg-primary {
   background-color: var(--jv-theme-primary) !important;
 }
-.border-primary, [class*="border-primary"] {
+[class*="SongPlayer"] .border-primary,
+[class*="MiniPlayer"] .border-primary {
   border-color: var(--jv-theme-primary) !important;
 }
 
