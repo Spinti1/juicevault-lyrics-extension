@@ -625,20 +625,19 @@ div:has(> span[aria-label="Volume"]),
 .jv-vol-widget {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 10px !important;
+  gap: 8px !important;
   background: rgba(13, 13, 18, 0.88) !important;
   border: 1px solid var(--jv-theme-border) !important;
   border-radius: 9999px !important;
-  padding: 5px 12px 5px 10px !important;
+  padding: 4px 10px 4px 8px !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 12px var(--jv-theme-glow) !important;
   backdrop-filter: blur(14px) !important;
   -webkit-backdrop-filter: blur(14px) !important;
   box-sizing: border-box !important;
-  height: 32px !important;
+  height: 30px !important;
   user-select: none !important;
   transition: border-color 0.2s, box-shadow 0.2s !important;
   flex-shrink: 0 !important;
-  margin-left: 6px !important;
 }
 
 .jv-vol-widget:hover {
@@ -667,8 +666,8 @@ div:has(> span[aria-label="Volume"]),
 }
 
 .jv-vol-widget .jv-vol-btn svg {
-  width: 16px !important;
-  height: 16px !important;
+  width: 15px !important;
+  height: 15px !important;
   stroke: var(--jv-theme-secondary) !important;
   color: var(--jv-theme-secondary) !important;
   pointer-events: none !important;
@@ -676,8 +675,8 @@ div:has(> span[aria-label="Volume"]),
 
 .jv-vol-widget .jv-vol-track {
   position: relative !important;
-  width: 76px !important;
-  height: 6px !important;
+  width: 68px !important;
+  height: 5px !important;
   background: rgba(255, 255, 255, 0.14) !important;
   border-radius: 9999px !important;
   cursor: pointer !important;
@@ -701,8 +700,8 @@ div:has(> span[aria-label="Volume"]),
   position: absolute !important;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
-  width: 12px !important;
-  height: 12px !important;
+  width: 11px !important;
+  height: 11px !important;
   border-radius: 50% !important;
   background: #ffffff !important;
   border: 2px solid var(--jv-theme-secondary) !important;
@@ -718,14 +717,75 @@ div:has(> span[aria-label="Volume"]),
 
 .jv-vol-widget .jv-vol-pct {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  font-size: 13px !important;
+  font-size: 12px !important;
   font-weight: 700 !important;
   color: #ffffff !important;
-  min-width: 32px !important;
+  min-width: 28px !important;
   text-align: right !important;
   font-variant-numeric: tabular-nums !important;
   letter-spacing: -0.01em !important;
   user-select: none !important;
   pointer-events: none !important;
   flex-shrink: 0 !important;
+}
+
+/* Full Player Bottom Bar Volume Placement */
+#jv-vol-full {
+  margin-left: 6px !important;
+}
+
+/* MiniPlayer Volume Container & Parent Alignment */
+[class*="MiniPlayer"] .relative.flex.items-center.gap-1\.5,
+[class*="MiniPlayer"] div:has(> #jv-vol-mini) {
+  flex-shrink: 0 !important;
+  margin-left: auto !important;
+  max-width: 96px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+}
+
+/* MiniPlayer Ultra-Compact HUD Pill (fits 100% inside card with zero clipping or layout overflow) */
+.jv-vol-widget.jv-mini,
+#jv-vol-mini {
+  height: 26px !important;
+  padding: 2px 6px 2px 6px !important;
+  gap: 4px !important;
+  max-width: 94px !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 8px var(--jv-theme-glow) !important;
+}
+
+.jv-vol-widget.jv-mini .jv-vol-btn,
+#jv-vol-mini .jv-vol-btn {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.jv-vol-widget.jv-mini .jv-vol-btn svg,
+#jv-vol-mini .jv-vol-btn svg {
+  width: 13px !important;
+  height: 13px !important;
+}
+
+.jv-vol-widget.jv-mini .jv-vol-track,
+#jv-vol-mini .jv-vol-track {
+  width: 36px !important;
+  height: 4px !important;
+}
+
+.jv-vol-widget.jv-mini .jv-vol-thumb,
+#jv-vol-mini .jv-vol-thumb {
+  width: 9px !important;
+  height: 9px !important;
+  border-width: 1.5px !important;
+}
+
+.jv-vol-widget.jv-mini .jv-vol-pct,
+#jv-vol-mini .jv-vol-pct {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  min-width: 22px !important;
+  letter-spacing: -0.02em !important;
 }

@@ -1296,7 +1296,8 @@
     document.querySelectorAll('.jv-vol-widget').forEach(widget => {
       const btn = widget.querySelector('.jv-vol-btn');
       if (btn) {
-        btn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${speakerSvg}</svg>`;
+        const svgSize = widget.classList.contains('jv-mini') ? 13 : 15;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" width="${svgSize}" height="${svgSize}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${speakerSvg}</svg>`;
       }
       const fill = widget.querySelector('.jv-vol-fill');
       if (fill) {
@@ -1370,16 +1371,17 @@
     }, { passive: false });
   }
 
-  function makeVolumeWidget(id) {
+  function makeVolumeWidget(id, isMini = false) {
     const widget = document.createElement('div');
-    widget.className = 'jv-vol-widget';
+    widget.className = isMini ? 'jv-vol-widget jv-mini' : 'jv-vol-widget';
     widget.id = id;
     const initialVol = savedVolume !== null ? savedVolume : 0.5;
     const pct = Math.round(initialVol * 100);
+    const svgSize = isMini ? 13 : 15;
 
     widget.innerHTML = `
       <button class="jv-vol-btn" title="Mute / Unmute" type="button">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" width="${svgSize}" height="${svgSize}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" stroke-width="2"/>
         </svg>
       </button>
@@ -1402,7 +1404,7 @@
       let fullWidget = document.getElementById('jv-vol-full');
       if (!fullWidget || fullWidget.parentElement !== rightControls) {
         if (fullWidget) fullWidget.remove();
-        fullWidget = makeVolumeWidget('jv-vol-full');
+        fullWidget = makeVolumeWidget('jv-vol-full', false);
         rightControls.appendChild(fullWidget);
       }
     }
@@ -1412,6 +1414,7 @@
     if (mini) {
       let miniVolArea = mini.querySelector('.relative.flex.items-center.gap-1\\.5') ||
                         mini.querySelector('div:has(> button[aria-label="Mute"])') ||
+                        mini.querySelector('div:has(> button[aria-label="Unmute"])') ||
                         mini.querySelector('div:has(> span[aria-label="Volume"])');
       if (!miniVolArea) {
         const btnRow = mini.querySelector('.flex.items-center.justify-between.gap-2') ||
@@ -1425,7 +1428,7 @@
         let miniWidget = document.getElementById('jv-vol-mini');
         if (!miniWidget || miniWidget.parentElement !== miniVolArea) {
           if (miniWidget) miniWidget.remove();
-          miniWidget = makeVolumeWidget('jv-vol-mini');
+          miniWidget = makeVolumeWidget('jv-vol-mini', true);
           miniVolArea.appendChild(miniWidget);
         }
       }
