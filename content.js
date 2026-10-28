@@ -1280,30 +1280,43 @@
   let lastScrollTime = 0;
   let lastScrollDir = 0;
 
-  function showVolumeToast(vol) {
-    let toast = document.getElementById('jv-volume-toast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'jv-volume-toast';
-      document.body.appendChild(toast);
-    }
+  function syncVolumePercentageUI(vol) {
+    if (typeof vol !== 'number' || isNaN(vol)) return;
     const pct = Math.round(vol * 100);
-    const speakerSvg = pct === 0
-      ? '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>'
-      : pct < 50
-        ? '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>'
-        : '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>';
+    const t = THEME_PALETTES[settings.colorTheme] || THEME_PALETTES.purple;
 
-    toast.innerHTML = `
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${speakerSvg}</svg>
-      <div class="jv-vol-bar"><div class="jv-vol-fill" style="width:${pct}%;"></div></div>
-      <span>${pct}%</span>
-    `;
-    toast.classList.add('show');
-    if (volumeToastTimer) clearTimeout(volumeToastTimer);
-    volumeToastTimer = setTimeout(() => {
-      if (toast) toast.classList.remove('show');
-    }, 1200);
+    // 1. Full Player Volume Wrapper (.SongPlayer_volumeWrapper)
+    document.querySelectorAll('[class*="SongPlayer_volumeWrapper"], [class*="volumeWrapper"]').forEach(wrap => {
+      let pctEl = wrap.querySelector('.jv-vol-pct');
+      if (!pctEl) {
+        pctEl = document.createElement('span');
+        pctEl.className = 'jv-vol-pct';
+        wrap.appendChild(pctEl);
+      }
+      pctEl.textContent = `${pct}%`;
+
+      const inp = wrap.querySelector('input[type="range"]');
+      if (inp) {
+        inp.style.setProperty('background', `linear-gradient(to right, ${t.primary} 0%, ${t.secondary} ${pct}%, rgba(255, 255, 255, 0.12) ${pct}%)`, 'important');
+      }
+    });
+
+    // 2. MiniPlayer Volume Wrapper (div containing span[aria-label="Volume"])
+    document.querySelectorAll('span[aria-label="Volume"]').forEach(span => {
+      const container = span.closest('.relative.flex.items-center') || span.parentElement;
+      if (!container) return;
+      let pctEl = container.querySelector('.jv-vol-pct');
+      if (!pctEl) {
+        pctEl = document.createElement('span');
+        pctEl.className = 'jv-vol-pct';
+        container.appendChild(pctEl);
+      }
+      pctEl.textContent = `${pct}%`;
+    });
+  }
+
+  function showVolumeToast(vol) {
+    syncVolumePercentageUI(vol);
   }
 
   function applyVolume(vol, fromUser = false) {
@@ -1364,6 +1377,7 @@
         if (pipSlider) pipSlider.value = vol;
       }
 
+      syncVolumePercentageUI(vol);
       if (fromUser) {
         showVolumeToast(vol);
       }
@@ -1505,6 +1519,7 @@
       injectMini();
       applyThemeCSS(settings.colorTheme);
     }
+    syncVolumePercentageUI(savedVolume !== null ? savedVolume : 0.5);
     hookVolumeScrollAreas();
   }
 
