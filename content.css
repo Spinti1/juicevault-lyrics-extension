@@ -5,6 +5,8 @@
   --jv-theme-border: rgba(139, 92, 246, 0.35);
   --jv-theme-line: rgba(139, 92, 246, 0.85);
   --jv-theme-gradient: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  --jv-theme-bar-bg: linear-gradient(180deg, #180f2c 0%, #0e081c 100%);
+  --jv-theme-track: rgba(255, 255, 255, 0.15);
 }
 
 /* ========== FULLSCREEN LYRICS BUTTON ========== */
@@ -412,13 +414,27 @@ button[title*="Visualizer"].jv-settings-active {
 
 /* ========== DYNAMIC SITE THEME INTEGRATION (FULL PLAYER & MINIPLAYER) ========== */
 
-/* Horizontal purple line across the bottom (Top edge of controls bar & bottom edge of player canvas) */
+/* Bottom Controls Bar Container - Theme background, border & ambient glow */
 div[class*="SongPlayer_controlsBar"],
 div[class*="controlsBar"],
 [class*="SongPlayer_controlsBar"],
 [class*="controlsBar"] {
-  border-top: 1.5px solid var(--jv-theme-line) !important;
-  box-shadow: 0 -4px 20px var(--jv-theme-glow) !important;
+  background: var(--jv-theme-bar-bg) !important;
+  background-color: var(--jv-theme-bar-bg) !important;
+  border-top: 2px solid var(--jv-theme-line) !important;
+  box-shadow: 0 -6px 25px var(--jv-theme-glow) !important;
+}
+
+/* Ensure inner rows don't override with purple background */
+[class*="SongPlayer_buttonsRow"],
+[class*="buttonsRow"],
+[class*="SongPlayer_playbackButtons"],
+[class*="playbackButtons"],
+[class*="SongPlayer_rightControls"],
+[class*="rightControls"],
+[class*="SongPlayer_progressRow"],
+[class*="progressRow"] {
+  background: transparent !important;
 }
 
 [class*="SongPlayer_waveform"],
@@ -426,7 +442,7 @@ div[class*="controlsBar"],
 [class*="waveformContainer"],
 [class*="SongPlayer_canvasWrapper"],
 canvas[class*="waveformCanvas"] {
-  border-bottom: 1.5px solid var(--jv-theme-line) !important;
+  border-bottom: 2px solid var(--jv-theme-line) !important;
 }
 
 /* Primary Play/Pause Button - Full Player Square Button & MiniPlayer Circle Button */
@@ -545,11 +561,23 @@ button.jv-settings-active svg {
 }
 
 /* Progress Track, Fill & Thumb */
+[class*="SongPlayer_progressTrack"],
+[class*="progressTrack"],
+[data-slot="slider-track"] {
+  background: var(--jv-theme-track) !important;
+  border-radius: 9999px !important;
+}
+[class*="SongPlayer_progressTrack"]:hover,
+[class*="progressTrack"]:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+}
+
 [class*="SongPlayer_progressFill"],
 [class*="progressFill"],
 [data-slot="slider-range"] {
   background: var(--jv-theme-gradient) !important;
   box-shadow: 0 0 10px var(--jv-theme-glow) !important;
+  border-radius: 9999px !important;
 }
 
 [class*="SongPlayer_progressThumb"],

@@ -46,7 +46,9 @@
       glow: 'rgba(139, 92, 246, 0.45)',
       border: 'rgba(139, 92, 246, 0.35)',
       line: 'rgba(139, 92, 246, 0.85)',
-      gradient: 'linear-gradient(135deg, #8b5cf6, #7c3aed)'
+      gradient: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+      barBg: 'linear-gradient(180deg, #180f2c 0%, #0e081c 100%)',
+      track: 'rgba(255, 255, 255, 0.15)'
     },
     green: {
       primary: '#10b981',
@@ -54,7 +56,9 @@
       glow: 'rgba(16, 185, 129, 0.45)',
       border: 'rgba(16, 185, 129, 0.35)',
       line: 'rgba(16, 185, 129, 0.85)',
-      gradient: 'linear-gradient(135deg, #10b981, #059669)'
+      gradient: 'linear-gradient(135deg, #10b981, #059669)',
+      barBg: 'linear-gradient(180deg, #091c13 0%, #04100b 100%)',
+      track: 'rgba(255, 255, 255, 0.15)'
     },
     fire: {
       primary: '#ef4444',
@@ -62,7 +66,9 @@
       glow: 'rgba(239, 68, 68, 0.45)',
       border: 'rgba(239, 68, 68, 0.35)',
       line: 'rgba(239, 68, 68, 0.85)',
-      gradient: 'linear-gradient(135deg, #ef4444, #f59e0b)'
+      gradient: 'linear-gradient(135deg, #ef4444, #f59e0b)',
+      barBg: 'linear-gradient(180deg, #220e0a 0%, #120705 100%)',
+      track: 'rgba(255, 255, 255, 0.15)'
     },
     ice: {
       primary: '#06b6d4',
@@ -70,7 +76,9 @@
       glow: 'rgba(6, 182, 212, 0.45)',
       border: 'rgba(6, 182, 212, 0.35)',
       line: 'rgba(6, 182, 212, 0.85)',
-      gradient: 'linear-gradient(135deg, #06b6d4, #3b82f6)'
+      gradient: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
+      barBg: 'linear-gradient(180deg, #081824 0%, #040e16 100%)',
+      track: 'rgba(255, 255, 255, 0.15)'
     },
     neon: {
       primary: '#ec4899',
@@ -78,7 +86,9 @@
       glow: 'rgba(236, 72, 153, 0.45)',
       border: 'rgba(236, 72, 153, 0.35)',
       line: 'rgba(236, 72, 153, 0.85)',
-      gradient: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #10b981 100%)'
+      gradient: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #10b981 100%)',
+      barBg: 'linear-gradient(180deg, #200a1a 0%, #12040e 100%)',
+      track: 'rgba(255, 255, 255, 0.15)'
     }
   };
 
@@ -91,6 +101,20 @@
     root.style.setProperty('--jv-theme-border', t.border);
     root.style.setProperty('--jv-theme-line', t.line);
     root.style.setProperty('--jv-theme-gradient', t.gradient);
+    root.style.setProperty('--jv-theme-bar-bg', t.barBg);
+    root.style.setProperty('--jv-theme-track', t.track);
+
+    // Apply inline style directly to controlsBar & progress elements for instant DOM reaction
+    try {
+      document.querySelectorAll('[class*="SongPlayer_controlsBar"], [class*="controlsBar"]').forEach(el => {
+        el.style.setProperty('background', t.barBg, 'important');
+        el.style.setProperty('border-top', `2px solid ${t.line}`, 'important');
+        el.style.setProperty('box-shadow', `0 -6px 24px ${t.glow}`, 'important');
+      });
+      document.querySelectorAll('[class*="SongPlayer_progressTrack"], [class*="progressTrack"]').forEach(el => {
+        el.style.setProperty('background', t.track, 'important');
+      });
+    } catch (e) {}
   }
 
   // Initialize theme CSS variables immediately
@@ -1445,9 +1469,11 @@
       injectFull();
       hookVisualizerButton();
       startVisualizer();
+      applyThemeCSS(settings.colorTheme);
     }
     if (document.querySelector('[class*="MiniPlayer"]')) {
       injectMini();
+      applyThemeCSS(settings.colorTheme);
     }
     hookVolumeScrollAreas();
   }
