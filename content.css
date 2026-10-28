@@ -610,168 +610,118 @@ button.jv-settings-active svg {
   border-color: var(--jv-theme-primary) !important;
 }
 
-/* ========== SITE VOLUME CONTROLS (FULL PLAYER & MINIPLAYER BOTTOM BAR - EMBEDDED HUD DESIGN) ========== */
-
-/* Hide floating duplicate popup toast (the volume HUD is now embedded directly into the bottom bar) */
+/* ========== HIDE SITE'S BROKEN / REDUNDANT VOLUME CONTROLS & FLOATING TOAST ========== */
+[class*="SongPlayer_volumeWrapper"],
+[class*="volumeWrapper"],
+button[aria-label="Mute"],
+button[aria-label="Unmute"],
+span[aria-label="Volume"],
+div:has(> span[aria-label="Volume"]),
 #jv-volume-toast {
   display: none !important;
 }
 
-/* Full Player Volume Wrapper - Sleek HUD Pill Design */
-[class*="SongPlayer_volumeWrapper"],
-[class*="volumeWrapper"] {
+/* ========== DEDICATED EMBEDDED VOLUME HUD WIDGET (PIXEL-PERFECT PILL) ========== */
+.jv-vol-widget {
   display: inline-flex !important;
   align-items: center !important;
   gap: 10px !important;
   background: rgba(13, 13, 18, 0.88) !important;
   border: 1px solid var(--jv-theme-border) !important;
   border-radius: 9999px !important;
-  padding: 4px 12px 4px 10px !important;
+  padding: 5px 12px 5px 10px !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 12px var(--jv-theme-glow) !important;
   backdrop-filter: blur(14px) !important;
   -webkit-backdrop-filter: blur(14px) !important;
+  box-sizing: border-box !important;
+  height: 32px !important;
+  user-select: none !important;
   transition: border-color 0.2s, box-shadow 0.2s !important;
+  flex-shrink: 0 !important;
   margin-left: 6px !important;
 }
 
-[class*="SongPlayer_volumeWrapper"]:hover {
+.jv-vol-widget:hover {
   border-color: var(--jv-theme-primary) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 16px var(--jv-theme-glow) !important;
 }
 
-/* MiniPlayer Volume Container in Bottom Bar - Matching Sleek HUD Pill Design */
-div.relative.flex.items-center:has(span[aria-label="Volume"]),
-div.relative.flex.items-center:has([aria-label="Volume"]) {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  background: rgba(13, 13, 18, 0.88) !important;
-  border: 1px solid var(--jv-theme-border) !important;
-  border-radius: 9999px !important;
-  padding: 4px 12px 4px 8px !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 12px var(--jv-theme-glow) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
-  transition: border-color 0.2s, box-shadow 0.2s !important;
-}
-
-div.relative.flex.items-center:has(span[aria-label="Volume"]):hover {
-  border-color: var(--jv-theme-primary) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 16px var(--jv-theme-glow) !important;
-}
-
-/* Speaker Buttons in Full Player & MiniPlayer */
-[class*="SongPlayer_volumeBtn"],
-[class*="volumeBtn"],
-button[aria-label="Mute"],
-button[aria-label="Unmute"] {
-  display: inline-flex !important;
+.jv-vol-widget .jv-vol-btn {
+  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   background: transparent !important;
   border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
   color: var(--jv-theme-secondary) !important;
   cursor: pointer !important;
-  padding: 0 !important;
-  transition: transform 0.15s ease, color 0.2s ease !important;
-  filter: drop-shadow(0 0 5px var(--jv-theme-glow)) !important;
   flex-shrink: 0 !important;
+  transition: transform 0.15s, color 0.15s !important;
+  filter: drop-shadow(0 0 5px var(--jv-theme-glow)) !important;
 }
 
-[class*="SongPlayer_volumeBtn"]:hover,
-button[aria-label="Mute"]:hover,
-button[aria-label="Unmute"]:hover {
+.jv-vol-widget .jv-vol-btn:hover {
   color: #ffffff !important;
-  transform: scale(1.1) !important;
+  transform: scale(1.15) !important;
 }
 
-[class*="SongPlayer_volumeBtn"] svg,
-button[aria-label="Mute"] svg,
-button[aria-label="Unmute"] svg {
-  width: 17px !important;
-  height: 17px !important;
+.jv-vol-widget .jv-vol-btn svg {
+  width: 16px !important;
+  height: 16px !important;
   stroke: var(--jv-theme-secondary) !important;
   color: var(--jv-theme-secondary) !important;
+  pointer-events: none !important;
 }
 
-/* Full Player Volume Range Slider (Sleek pill bar with micro-thumb) */
-input[type="range"][class*="SongPlayer_volumeSlider"],
-input[type="range"][class*="volumeSlider"] {
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  width: 84px !important;
+.jv-vol-widget .jv-vol-track {
+  position: relative !important;
+  width: 76px !important;
   height: 6px !important;
+  background: rgba(255, 255, 255, 0.14) !important;
   border-radius: 9999px !important;
-  outline: none !important;
   cursor: pointer !important;
-  margin: 0 !important;
-  background: rgba(255, 255, 255, 0.12) !important;
-  border: none !important;
+  flex-shrink: 0 !important;
+  touch-action: none !important;
 }
 
-input[type="range"][class*="SongPlayer_volumeSlider"]::-webkit-slider-runnable-track {
-  height: 6px !important;
+.jv-vol-widget .jv-vol-fill {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100% !important;
+  background: var(--jv-theme-gradient) !important;
   border-radius: 9999px !important;
-  border: none !important;
+  box-shadow: 0 0 8px var(--jv-theme-glow) !important;
+  pointer-events: none !important;
+  transition: width 0.05s ease-out !important;
 }
 
-input[type="range"][class*="SongPlayer_volumeSlider"]::-webkit-slider-thumb {
-  -webkit-appearance: none !important;
-  appearance: none !important;
+.jv-vol-widget .jv-vol-thumb {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
   width: 12px !important;
   height: 12px !important;
   border-radius: 50% !important;
   background: #ffffff !important;
   border: 2px solid var(--jv-theme-secondary) !important;
   box-shadow: 0 0 8px var(--jv-theme-glow) !important;
-  cursor: pointer !important;
-  margin-top: -3px !important;
-  transition: transform 0.15s, box-shadow 0.15s !important;
+  pointer-events: none !important;
+  transition: left 0.05s ease-out, transform 0.15s !important;
 }
 
-input[type="range"][class*="SongPlayer_volumeSlider"]::-webkit-slider-thumb:hover {
-  transform: scale(1.25) !important;
+.jv-vol-widget:hover .jv-vol-thumb {
+  transform: translate(-50%, -50%) scale(1.2) !important;
   box-shadow: 0 0 12px var(--jv-theme-glow) !important;
 }
 
-/* MiniPlayer Volume Slider in bottom bar */
-span[aria-label="Volume"] {
-  display: flex !important;
-  align-items: center !important;
-  width: 80px !important;
-  cursor: pointer !important;
-}
-
-span[aria-label="Volume"] [data-slot="slider-track"] {
-  height: 6px !important;
-  background: rgba(255, 255, 255, 0.12) !important;
-  border-radius: 9999px !important;
-}
-
-span[aria-label="Volume"] [data-slot="slider-range"] {
-  background: var(--jv-theme-gradient) !important;
-  border-radius: 9999px !important;
-  box-shadow: 0 0 8px var(--jv-theme-glow) !important;
-}
-
-span[aria-label="Volume"] [data-slot="slider-thumb"],
-span[aria-label="Volume"] [role="slider"] {
-  width: 12px !important;
-  height: 12px !important;
-  background: #ffffff !important;
-  border: 2px solid var(--jv-theme-secondary) !important;
-  box-shadow: 0 0 8px var(--jv-theme-glow) !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-}
-
-/* Volume Percentage Text Indicator (Tabular Numbers, Crisp White) */
-.jv-vol-pct {
+.jv-vol-widget .jv-vol-pct {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   color: #ffffff !important;
-  min-width: 34px !important;
+  min-width: 32px !important;
   text-align: right !important;
   font-variant-numeric: tabular-nums !important;
   letter-spacing: -0.01em !important;

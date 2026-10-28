@@ -114,6 +114,7 @@
       document.querySelectorAll('[class*="SongPlayer_progressTrack"], [class*="progressTrack"]').forEach(el => {
         el.style.setProperty('background', t.track, 'important');
       });
+      updateVolumeWidgetUI(savedVolume !== null ? savedVolume : 0.5);
     } catch (e) {}
   }
 
@@ -1280,43 +1281,161 @@
   let lastScrollTime = 0;
   let lastScrollDir = 0;
 
-  function syncVolumePercentageUI(vol) {
+  let previousNonZeroVolume = 0.5;
+
+  function updateVolumeWidgetUI(vol) {
     if (typeof vol !== 'number' || isNaN(vol)) return;
     const pct = Math.round(vol * 100);
-    const t = THEME_PALETTES[settings.colorTheme] || THEME_PALETTES.purple;
 
-    // 1. Full Player Volume Wrapper (.SongPlayer_volumeWrapper)
-    document.querySelectorAll('[class*="SongPlayer_volumeWrapper"], [class*="volumeWrapper"]').forEach(wrap => {
-      let pctEl = wrap.querySelector('.jv-vol-pct');
-      if (!pctEl) {
-        pctEl = document.createElement('span');
-        pctEl.className = 'jv-vol-pct';
-        wrap.appendChild(pctEl);
-      }
-      pctEl.textContent = `${pct}%`;
+    const speakerSvg = pct === 0
+      ? '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><line x1="22" y1="9" x2="16" y2="15" stroke="currentColor" stroke-width="2"/><line x1="16" y1="9" x2="22" y2="15" stroke="currentColor" stroke-width="2"/>'
+      : pct < 50
+        ? '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2"/>'
+        : '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" stroke-width="2"/>';
 
-      const inp = wrap.querySelector('input[type="range"]');
-      if (inp) {
-        inp.style.setProperty('background', `linear-gradient(to right, ${t.primary} 0%, ${t.secondary} ${pct}%, rgba(255, 255, 255, 0.12) ${pct}%)`, 'important');
+    document.querySelectorAll('.jv-vol-widget').forEach(widget => {
+      const btn = widget.querySelector('.jv-vol-btn');
+      if (btn) {
+        btn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${speakerSvg}</svg>`;
       }
-    });
-
-    // 2. MiniPlayer Volume Wrapper (div containing span[aria-label="Volume"])
-    document.querySelectorAll('span[aria-label="Volume"]').forEach(span => {
-      const container = span.closest('.relative.flex.items-center') || span.parentElement;
-      if (!container) return;
-      let pctEl = container.querySelector('.jv-vol-pct');
-      if (!pctEl) {
-        pctEl = document.createElement('span');
-        pctEl.className = 'jv-vol-pct';
-        container.appendChild(pctEl);
+      const fill = widget.querySelector('.jv-vol-fill');
+      if (fill) {
+        fill.style.width = `${pct}%`;
       }
-      pctEl.textContent = `${pct}%`;
+      const thumb = widget.querySelector('.jv-vol-thumb');
+      if (thumb) {
+        thumb.style.left = `${pct}%`;
+      }
+      const pctSpan = widget.querySelector('.jv-vol-pct');
+      if (pctSpan) {
+        pctSpan.textContent = `${pct}%`;
+      }
     });
   }
 
+  function bindVolumeWidgetEvents(widget) {
+    if (widget.dataset.jvBound) return;
+    widget.dataset.jvBound = '1';
+
+    const btn = widget.querySelector('.jv-vol-btn');
+    const track = widget.querySelector('.jv-vol-track');
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const audio = getAudio();
+      if (!audio) return;
+      if (audio.muted || (savedVolume !== null && savedVolume === 0)) {
+        applyVolume(previousNonZeroVolume || 0.5, true);
+      } else {
+        previousNonZeroVolume = (savedVolume !== null && savedVolume > 0) ? savedVolume : (audio.volume || 0.5);
+        applyVolume(0, true);
+      }
+    });
+
+    function setVolFromEvent(e) {
+      const rect = track.getBoundingClientRect();
+      if (rect.width <= 0) return;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+      applyVolume(ratio, true);
+    }
+
+    track.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      try { track.setPointerCapture(e.pointerId); } catch (err) {}
+      setVolFromEvent(e);
+
+      function onPointerMove(moveEvent) {
+        setVolFromEvent(moveEvent);
+      }
+
+      function onPointerUp(upEvent) {
+        try { track.releasePointerCapture(e.pointerId); } catch (err) {}
+        track.removeEventListener('pointermove', onPointerMove);
+        track.removeEventListener('pointerup', onPointerUp);
+        track.removeEventListener('pointercancel', onPointerUp);
+      }
+
+      track.addEventListener('pointermove', onPointerMove);
+      track.addEventListener('pointerup', onPointerUp);
+      track.addEventListener('pointercancel', onPointerUp);
+    });
+
+    widget.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      adjustVolume(e.deltaY);
+    }, { passive: false });
+  }
+
+  function makeVolumeWidget(id) {
+    const widget = document.createElement('div');
+    widget.className = 'jv-vol-widget';
+    widget.id = id;
+    const initialVol = savedVolume !== null ? savedVolume : 0.5;
+    const pct = Math.round(initialVol * 100);
+
+    widget.innerHTML = `
+      <button class="jv-vol-btn" title="Mute / Unmute" type="button">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <div class="jv-vol-track">
+        <div class="jv-vol-fill" style="width: ${pct}%;"></div>
+        <div class="jv-vol-thumb" style="left: ${pct}%;"></div>
+      </div>
+      <span class="jv-vol-pct">${pct}%</span>
+    `;
+    bindVolumeWidgetEvents(widget);
+    return widget;
+  }
+
+  function injectVolumeWidgets() {
+    const currentVol = savedVolume !== null ? savedVolume : 0.5;
+
+    // 1. Full Player (.SongPlayer_rightControls)
+    const rightControls = document.querySelector('[class*="SongPlayer_rightControls"], [class*="rightControls"]');
+    if (rightControls) {
+      let fullWidget = document.getElementById('jv-vol-full');
+      if (!fullWidget || fullWidget.parentElement !== rightControls) {
+        if (fullWidget) fullWidget.remove();
+        fullWidget = makeVolumeWidget('jv-vol-full');
+        rightControls.appendChild(fullWidget);
+      }
+    }
+
+    // 2. MiniPlayer (bottom right volume controls area)
+    const mini = document.querySelector('[class*="MiniPlayer"]');
+    if (mini) {
+      let miniVolArea = mini.querySelector('.relative.flex.items-center.gap-1\\.5') ||
+                        mini.querySelector('div:has(> button[aria-label="Mute"])') ||
+                        mini.querySelector('div:has(> span[aria-label="Volume"])');
+      if (!miniVolArea) {
+        const btnRow = mini.querySelector('.flex.items-center.justify-between.gap-2') ||
+                       mini.querySelector('div:has(> div > button[aria-label*="shuffle" i])');
+        if (btnRow && btnRow.children.length > 1) {
+          miniVolArea = btnRow.children[btnRow.children.length - 1];
+        }
+      }
+
+      if (miniVolArea) {
+        let miniWidget = document.getElementById('jv-vol-mini');
+        if (!miniWidget || miniWidget.parentElement !== miniVolArea) {
+          if (miniWidget) miniWidget.remove();
+          miniWidget = makeVolumeWidget('jv-vol-mini');
+          miniVolArea.appendChild(miniWidget);
+        }
+      }
+    }
+
+    updateVolumeWidgetUI(currentVol);
+  }
+
   function showVolumeToast(vol) {
-    syncVolumePercentageUI(vol);
+    updateVolumeWidgetUI(vol);
   }
 
   function applyVolume(vol, fromUser = false) {
@@ -1377,10 +1496,7 @@
         if (pipSlider) pipSlider.value = vol;
       }
 
-      syncVolumePercentageUI(vol);
-      if (fromUser) {
-        showVolumeToast(vol);
-      }
+      updateVolumeWidgetUI(vol);
     } finally {
       setTimeout(() => { isSelfVolumeChange = false; }, 35);
     }
@@ -1519,7 +1635,7 @@
       injectMini();
       applyThemeCSS(settings.colorTheme);
     }
-    syncVolumePercentageUI(savedVolume !== null ? savedVolume : 0.5);
+    injectVolumeWidgets();
     hookVolumeScrollAreas();
   }
 
