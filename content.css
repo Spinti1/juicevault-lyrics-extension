@@ -610,12 +610,70 @@ button.jv-settings-active svg {
   border-color: var(--jv-theme-primary) !important;
 }
 
-/* ========== HIDE ORIGINAL SITE VOLUME CONTROLS (ONLY BUTTONS & SLIDERS) ========== */
-button[aria-label="Mute"],
-button[aria-label="Unmute"],
-span[aria-label="Volume"],
+/* ========== SITE VOLUME CONTROLS (FULL PLAYER & MINIPLAYER BOTTOM BAR) ========== */
 [class*="SongPlayer_volumeWrapper"],
+[class*="volumeWrapper"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
 [class*="SongPlayer_volumeBtn"],
-[class*="SongPlayer_volumeSlider"] {
-  display: none !important;
+[class*="volumeBtn"],
+button[aria-label="Mute"],
+button[aria-label="Unmute"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--jv-theme-secondary) !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease, color 0.2s ease !important;
+}
+
+[class*="SongPlayer_volumeBtn"]:hover,
+button[aria-label="Mute"]:hover,
+button[aria-label="Unmute"]:hover {
+  color: #ffffff !important;
+  transform: scale(1.1) !important;
+}
+
+[class*="SongPlayer_volumeBtn"] svg,
+button[aria-label="Mute"] svg,
+button[aria-label="Unmute"] svg {
+  stroke: var(--jv-theme-secondary) !important;
+  color: var(--jv-theme-secondary) !important;
+}
+
+/* Full Player Volume Range Slider */
+input[type="range"][class*="SongPlayer_volumeSlider"],
+input[type="range"][class*="volumeSlider"] {
+  display: inline-block !important;
+  accent-color: var(--jv-theme-primary) !important;
+  cursor: pointer !important;
+  height: 5px !important;
+  border-radius: 9999px !important;
+}
+
+/* MiniPlayer Volume Slider in bottom bar */
+span[aria-label="Volume"],
+div:has(> span[aria-label="Volume"]) {
+  display: flex !important;
+  align-items: center !important;
+}
+
+span[aria-label="Volume"] [data-slot="slider-track"] {
+  background: var(--jv-theme-track) !important;
+}
+
+span[aria-label="Volume"] [data-slot="slider-range"] {
+  background: var(--jv-theme-gradient) !important;
+}
+
+span[aria-label="Volume"] [data-slot="slider-thumb"],
+span[aria-label="Volume"] [role="slider"] {
+  background: #ffffff !important;
+  border: 2px solid var(--jv-theme-secondary) !important;
+  box-shadow: 0 0 8px var(--jv-theme-glow) !important;
 }

@@ -1409,12 +1409,42 @@
     }
   }
 
-  // Intercept volume resets by JuiceVault / React (e.g. Next Track resetting volume to default)
+  // Track direct user interaction with native sliders and mute buttons
+  let isUserInteractingWithVolume = false;
+  let userVolInteractionTimer = null;
+
+  function markUserVolumeInteraction() {
+    isUserInteractingWithVolume = true;
+    if (userVolInteractionTimer) clearTimeout(userVolInteractionTimer);
+    userVolInteractionTimer = setTimeout(() => {
+      isUserInteractingWithVolume = false;
+    }, 450);
+  }
+
+  ['pointerdown', 'mousedown', 'touchstart', 'input', 'change', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, (e) => {
+      const target = e.target;
+      if (!target) return;
+      const isVolEl = target.closest('[class*="volume" i], [aria-label*="volume" i], [aria-label*="mute" i], [role="slider"]');
+      if (isVolEl) {
+        markUserVolumeInteraction();
+      }
+    }, true);
+  });
+
+  // Intercept volume changes: distinguish user slider drag vs site automatic reset
   window.addEventListener('volumechange', (e) => {
     if (isSelfVolumeChange) return;
     const audio = e.target;
-    if (audio && audio.tagName === 'AUDIO' && savedVolume !== null) {
-      if (Math.abs(audio.volume - savedVolume) > 0.005) {
+    if (audio && audio.tagName === 'AUDIO') {
+      if (isUserInteractingWithVolume) {
+        // User manually dragged slider or clicked mute on page: save and show HUD
+        const vol = audio.muted ? 0 : audio.volume;
+        savedVolume = Math.round(vol * 100) / 100;
+        try { localStorage.setItem('jv-user-volume', String(savedVolume)); } catch (err) {}
+        showVolumeToast(savedVolume);
+      } else if (savedVolume !== null && Math.abs(audio.volume - savedVolume) > 0.005) {
+        // Unintended site reset (e.g. autoplay/track change): restore user's saved volume
         applyVolume(savedVolume, false);
       }
     }

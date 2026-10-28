@@ -11,7 +11,7 @@ A lightweight Chrome extension for **[JuiceVault](https://juicevault.xyz)** that
 ## Features
 
 - **Audio Visualizer**: 4 styles (Bars, Mirror Bars, Waveform, Circular Halo). Includes center-mirror mode and 5 color themes (Purple Haze, Neon, Green, Fire, Ice) that re-theme the player buttons, seekbar, and baseline.
-- **Mouse Wheel Volume**: Scroll over the player or miniplayer to change volume (1% step, accelerates to 2% on continuous scroll). Volume is remembered across song changes.
+- **Smart Volume Engine**: Dual-control with smooth mouse wheel scroll (1% step, 2% fast scroll) + native on-screen volume sliders in both full player and bottom miniplayer. Remembers volume across tracks with neon toast HUD.
 - **Floating Miniplayer (PiP)**: Pop out a desktop miniplayer with playback controls and track progress while gaming or working in other apps.
 - **Quick Lyrics (`Alt + L`)**: Instantly searches Genius lyrics for the current song in a new tab.
 - **Lightweight & Private**: Zero data collected, zero external requests, works strictly on `juicevault.xyz`.
